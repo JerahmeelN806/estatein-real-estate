@@ -1,5 +1,5 @@
 function Footer() {
-  const columns = [
+  const mainColumns = [
     {
       title: "Home",
       links: ["Hero Section", "Features", "Properties", "Testimonials", "FAQ's"],
@@ -8,25 +8,28 @@ function Footer() {
       title: "About Us",
       links: ["Our Story", "Our Works", "How It Works", "Our Team", "Our Clients"],
     },
-    {
-      title: "Properties",
-      links: ["Portfolio", "Categories"],
-    },
-    {
-      title: "Services",
-      links: [
-        "Valuation Mastery",
-        "Strategic Marketing",
-        "Negotiation Wizardry",
-        "Closing Success",
-        "Property Management",
-      ],
-    },
-    {
-      title: "Contact Us",
-      links: ["Contact Form", "Our Offices"],
-    },
   ]
+
+  const services = {
+    title: "Services",
+    links: [
+      "Valuation Mastery",
+      "Strategic Marketing",
+      "Negotiation Wizardry",
+      "Closing Success",
+      "Property Management",
+    ],
+  }
+
+  const properties = {
+    title: "Properties",
+    links: ["Portfolio", "Categories"],
+  }
+
+  const contact = {
+    title: "Contact Us",
+    links: ["Contact Form", "Our Offices"],
+  }
 
   const socials = [
     { label: "Facebook", icon: "f" },
@@ -56,7 +59,7 @@ function Footer() {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-7 gap-x-10 gap-y-8 md:gap-y-8">
+          <div className="grid grid-cols-2 md:grid-cols-7 gap-x-4 gap-y-8">
             <div className="hidden md:block md:col-span-2">
               <div className="flex items-center gap-2 mb-6">
                 <div className="w-6 h-6 bg-purple-600 rounded-full" />
@@ -74,13 +77,16 @@ function Footer() {
               </div>
             </div>
 
-            {columns.map((col) => (
+            {mainColumns.map((col) => (
               <div key={col.title}>
-                <h4 className="text-gray-500 text-sm mb-4">{col.title}</h4>
+                <h4 className="text-gray-500 text-sm mb-4 whitespace-nowrap">{col.title}</h4>
                 <ul className="space-y-3 list-none">
                   {col.links.map((link) => (
                     <li key={link} className="list-none">
-                      <a href="#" className="text-sm text-gray-100 hover:text-white">
+                      <a
+                        href="#"
+                        className="text-sm text-gray-100 hover:text-white whitespace-nowrap"
+                      >
                         {link}
                       </a>
                     </li>
@@ -88,6 +94,53 @@ function Footer() {
                 </ul>
               </div>
             ))}
+
+            {/* Properties + Contact Us stacked in one column */}
+            <div>
+              <h4 className="text-gray-500 text-sm mb-4 whitespace-nowrap">{properties.title}</h4>
+              <ul className="space-y-3 list-none mb-8">
+                {properties.links.map((link) => (
+                  <li key={link} className="list-none">
+                    <a
+                      href="#"
+                      className="text-sm text-gray-100 hover:text-white whitespace-nowrap"
+                    >
+                      {link}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+
+              <h4 className="text-gray-500 text-sm mb-4 whitespace-nowrap">{contact.title}</h4>
+              <ul className="space-y-3 list-none">
+                {contact.links.map((link) => (
+                  <li key={link} className="list-none">
+                    <a
+                      href="#"
+                      className="text-sm text-gray-100 hover:text-white whitespace-nowrap"
+                    >
+                      {link}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="text-gray-500 text-sm mb-4 whitespace-nowrap">{services.title}</h4>
+              <ul className="space-y-3 list-none">
+                {services.links.map((link) => (
+                  <li key={link} className="list-none">
+                    <a
+                      href="#"
+                      className="text-sm text-gray-100 hover:text-white whitespace-nowrap"
+                    >
+                      {link}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
 
