@@ -2,23 +2,11 @@ function Footer() {
   const columns = [
     {
       title: "Home",
-      links: [
-        "Hero Section",
-        "Features",
-        "Properties",
-        "Testimonials",
-        "FAQ's",
-      ],
+      links: ["Hero Section", "Features", "Properties", "Testimonials", "FAQ's"],
     },
     {
       title: "About Us",
-      links: [
-        "Our Story",
-        "Our Works",
-        "How It Works",
-        "Our Team",
-        "Our Clients",
-      ],
+      links: ["Our Story", "Our Works", "How It Works", "Our Team", "Our Clients"],
     },
     {
       title: "Properties",
@@ -38,193 +26,94 @@ function Footer() {
       title: "Contact Us",
       links: ["Contact Form", "Our Offices"],
     },
-  ];
+  ]
 
   const socials = [
     { label: "Facebook", icon: "f" },
     { label: "LinkedIn", icon: "in" },
     { label: "Twitter", icon: "𝕏" },
     { label: "YouTube", icon: "▶" },
-  ];
+  ]
 
   return (
-    <footer className="px-2 pb-6 max-w-7xl mx-auto">
-      <div className="bg-[#151517] border border-[#232326] overflow-hidden">
-        
-        {/* TOP SECTION */}
-        <div className="px-3 sm:px-5 pt-5 pb-10">
-          
-          {/* LOGO */}
-          <div className="flex items-center gap-2 pb-4 border-b border-[#252528]">
-            <div className="w-7 h-7 bg-[#703BF7] rounded-full flex items-center justify-center">
-              <div className="w-3 h-3 bg-[#151517] rounded-full translate-x-[-2px] translate-y-[-2px]" />
+    <footer className="px-4 md:px-8 pb-6 md:pb-10 max-w-7xl mx-auto">
+      <div className="bg-[#151517] rounded-3xl overflow-hidden">
+        <div className="px-6 md:px-10 py-8 md:py-10">
+          <div className="mb-8 md:mb-0 md:hidden">
+            <div className="flex items-center gap-2 mb-5">
+              <div className="w-6 h-6 bg-purple-600 rounded-full" />
+              <span className="font-semibold text-lg">Estatein</span>
             </div>
-
-            <span className="font-semibold text-base text-white">
-              Estatein
-            </span>
-          </div>
-
-          {/* EMAIL */}
-          <div className="mt-1 mb-8 border-b border-[#252528] pb-7">
-            <div className="flex items-center border border-[#2a2a2d] rounded-lg px-4 h-10">
-              <span className="text-gray-500 mr-2 text-sm">✉</span>
-
+            <div className="flex items-center bg-[#0d0d0f] rounded-full pl-4 pr-1.5 py-1.5">
               <input
                 type="email"
                 placeholder="Enter Your Email"
-                className="bg-transparent text-[11px] text-gray-300 placeholder-gray-500 outline-none flex-1 min-w-0"
+                className="bg-transparent text-sm text-gray-300 placeholder-gray-500 outline-none flex-1"
               />
-
-              <button
-                type="button"
-                className="text-white text-base flex-shrink-0 ml-2"
-              >
+              <button className="bg-white text-black w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0">
                 ➤
               </button>
             </div>
           </div>
 
-          {/* LINKS */}
-          <div className="grid grid-cols-2">
-            
-            {/* HOME */}
-            <div className="pr-3">
-              <h4 className="text-gray-500 text-xs mb-3">
-                Home
-              </h4>
-
-              <ul className="space-y-2.5">
-                {columns[0].links.map((link) => (
-                  <li key={link}>
-                    <a
-                      href="#"
-                      className="text-[11px] text-gray-100 hover:text-white transition-colors"
-                    >
-                      {link}
-                    </a>
-                  </li>
-                ))}
-              </ul>
+          <div className="grid grid-cols-2 md:grid-cols-7 gap-x-10 gap-y-8 md:gap-y-8">
+            <div className="hidden md:block md:col-span-2">
+              <div className="flex items-center gap-2 mb-6">
+                <div className="w-6 h-6 bg-purple-600 rounded-full" />
+                <span className="font-semibold text-lg">Estatein</span>
+              </div>
+              <div className="flex items-center bg-[#0d0d0f] rounded-full pl-4 pr-1.5 py-1.5 max-w-xs">
+                <input
+                  type="email"
+                  placeholder="Enter Your Email"
+                  className="bg-transparent text-sm text-gray-300 placeholder-gray-500 outline-none flex-1"
+                />
+                <button className="bg-white text-black w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0">
+                  ➤
+                </button>
+              </div>
             </div>
 
-            {/* ABOUT US */}
-            <div className="pl-3 border-l border-[#252528]">
-              <h4 className="text-gray-500 text-xs mb-3">
-                About Us
-              </h4>
-
-              <ul className="space-y-2.5">
-                {columns[1].links.map((link) => (
-                  <li key={link}>
-                    <a
-                      href="#"
-                      className="text-[11px] text-gray-100 hover:text-white transition-colors"
-                    >
-                      {link}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* PROPERTIES */}
-            <div className="pr-3 mt-3 pt-3 border-t border-[#252528]">
-              <h4 className="text-gray-500 text-xs mb-3">
-                Properties
-              </h4>
-
-              <ul className="space-y-2.5">
-                {columns[2].links.map((link) => (
-                  <li key={link}>
-                    <a
-                      href="#"
-                      className="text-[11px] text-gray-100 hover:text-white transition-colors"
-                    >
-                      {link}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* SERVICES */}
-            <div className="pl-3 mt-3 pt-3 border-l border-t border-[#252528]">
-              <h4 className="text-gray-500 text-xs mb-3">
-                Services
-              </h4>
-
-              <ul className="space-y-2.5">
-                {columns[3].links.map((link) => (
-                  <li key={link}>
-                    <a
-                      href="#"
-                      className="text-[11px] text-gray-100 hover:text-white transition-colors"
-                    >
-                      {link}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* CONTACT US */}
-            <div className="pr-3 mt-3 pt-3 border-t border-[#252528]">
-              <h4 className="text-gray-500 text-xs mb-3">
-                Contact Us
-              </h4>
-
-              <ul className="space-y-2.5">
-                {columns[4].links.map((link) => (
-                  <li key={link}>
-                    <a
-                      href="#"
-                      className="text-[11px] text-gray-100 hover:text-white transition-colors"
-                    >
-                      {link}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
+            {columns.map((col) => (
+              <div key={col.title}>
+                <h4 className="text-gray-500 text-sm mb-4">{col.title}</h4>
+                <ul className="space-y-3 list-none">
+                  {col.links.map((link) => (
+                    <li key={link} className="list-none">
+                      <a href="#" className="text-sm text-gray-100 hover:text-white">
+                        {link}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
           </div>
         </div>
 
-        {/* BOTTOM SECTION */}
-        <div className="border-t border-[#252528] px-4 py-6">
-          
-          {/* SOCIALS */}
-          <div className="flex justify-center gap-2.5 mb-5">
-            {socials.map((social) => (
-              <a
-                key={social.label}
-                href="#"
-                aria-label={social.label}
-                className="w-11 h-11 rounded-full bg-[#0d0d0f] flex items-center justify-center text-white text-sm hover:bg-[#202024] transition-colors"
-              >
-                {social.icon}
-              </a>
-            ))}
-          </div>
-
-          {/* COPYRIGHT */}
-          <div className="flex flex-col items-center gap-3 text-center">
-            <span className="text-[10px] text-gray-400">
-              ©2023 Estatein. All Rights Reserved.
-            </span>
-
-            <a
-              href="#"
-              className="text-[10px] text-gray-400 hover:text-white transition-colors"
-            >
-              Terms &amp; Conditions
-            </a>
+        <div className="border-t border-[#232326]">
+          <div className="px-6 md:px-10 py-6 flex flex-col items-center gap-4 md:flex-row md:justify-between">
+            <div className="flex gap-3 order-1">
+              {socials.map((s) => (
+                <a
+                  key={s.label}
+                  href="#"
+                  aria-label={s.label}
+                  className="w-9 h-9 rounded-full bg-[#0d0d0f] flex items-center justify-center text-sm hover:bg-[#1a1a1d]"
+                >
+                  {s.icon}
+                </a>
+              ))}
+            </div>
+            <div className="flex flex-col items-center gap-1 md:flex-row md:gap-6 text-sm text-gray-400 text-center order-2 md:order-none">
+              <span>@2023 Estatein. All Rights Reserved.</span>
+              <a href="#" className="hover:text-white">Terms &amp; Conditions</a>
+            </div>
           </div>
         </div>
       </div>
     </footer>
-  );
+  )
 }
 
-export default Footer;
+export default Footer
