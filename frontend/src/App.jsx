@@ -9,6 +9,8 @@ import FAQ from "./sections/FAQ"
 import CTA from "./sections/CTA"
 import Footer from "./sections/Footer"
 import OurJourney from "./sections/OurJourney"
+import OurAchievements from "./sections/OurAchievements"
+import NavigatingExperience from "./sections/NavigatingExperience"
 
 function HomePage() {
   return (
@@ -82,6 +84,9 @@ function AboutPage() {
           </div>
         </div>
       </section>
+
+      <OurAchievements />
+      <NavigatingExperience />
     </>
   )
 }
