@@ -15,30 +15,38 @@ function OurJourney() {
       </div>
 
       <div className="grid md:grid-cols-2 gap-8 items-center">
-        <div>
-          <h1 className="text-3xl md:text-4xl font-bold mb-4">Our Journey</h1>
+        {/* Image - first on mobile, second column on desktop */}
+        <div className="relative order-1 md:order-2">
+          <img
+            src={house}
+            alt="House model"
+            className="rounded-2xl w-full h-[300px] md:h-[350px] object-cover"
+          />
+        </div>
+
+        {/* Text content - second on mobile, first column on desktop */}
+        <div className="order-2 md:order-1">
+          <h1 className="text-3xl md:text-4xl font-bold mb-4 mt-8 md:mt-0">Our Journey</h1>
           <p className="text-gray-400 text-sm mb-8 max-w-md">
             Our story is one of continuous growth and evolution. We started as a small team
             with big dreams, determined to create a real estate platform that transcended
             the ordinary. Over the years, we've expanded our reach, forged valuable
             partnerships, and gained the trust of countless clients.
           </p>
-          <div className="grid grid-cols-3 gap-4 max-w-md">
-            {stats.map(([num, label]) => (
-              <div key={label} className="bg-[#151517] rounded-xl p-4">
-                <div className="text-xl font-bold">{num}</div>
-                <div className="text-xs text-gray-400 mt-1">{label}</div>
-              </div>
-            ))}
+          <div className="grid grid-cols-2 gap-4 max-w-md">
+            <div className="bg-[#151517] rounded-xl p-4">
+              <div className="text-xl font-bold">{stats[0][0]}</div>
+              <div className="text-xs text-gray-400 mt-1">{stats[0][1]}</div>
+            </div>
+            <div className="bg-[#151517] rounded-xl p-4">
+              <div className="text-xl font-bold">{stats[1][0]}</div>
+              <div className="text-xs text-gray-400 mt-1">{stats[1][1]}</div>
+            </div>
+            <div className="col-span-2 md:col-span-1 bg-[#151517] rounded-xl p-4 text-center md:text-left">
+              <div className="text-xl font-bold">{stats[2][0]}</div>
+              <div className="text-xs text-gray-400 mt-1">{stats[2][1]}</div>
+            </div>
           </div>
-        </div>
-
-        <div className="relative">
-          <img
-            src={house}
-            alt="House model"
-            className="rounded-2xl w-full h-[350px] object-cover"
-          />
         </div>
       </div>
     </section>
