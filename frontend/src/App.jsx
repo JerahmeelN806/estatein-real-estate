@@ -11,6 +11,8 @@ import Footer from "./sections/Footer"
 import OurJourney from "./sections/OurJourney"
 import OurAchievements from "./sections/OurAchievements"
 import NavigatingExperience from "./sections/NavigatingExperience"
+import MeetTheTeam from "./sections/MeetTheTeam"
+import ValuedClients from "./sections/ValuedClients"
 
 function HomePage() {
   return (
@@ -87,6 +89,9 @@ function AboutPage() {
 
       <OurAchievements />
       <NavigatingExperience />
+      <MeetTheTeam />
+      <ValuedClients />
+      <CTA />
     </>
   )
 }
