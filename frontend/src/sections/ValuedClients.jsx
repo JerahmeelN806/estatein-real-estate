@@ -42,17 +42,17 @@ function ValuedClients() {
 
             <div className="flex gap-8 mb-4 text-xs">
               <div>
-                <div className="text-gray-500 mb-1">🏢 Domain</div>
+                <div className="text-gray-500 mb-1">Domain</div>
                 <div>{c.domain}</div>
               </div>
               <div>
-                <div className="text-gray-500 mb-1">✦ Category</div>
+                <div className="text-gray-500 mb-1">Category</div>
                 <div>{c.category}</div>
               </div>
             </div>
 
             <div className="bg-[#151517] rounded-xl p-4">
-              <div className="text-xs text-gray-500 mb-2">What They Said 🏆</div>
+              <div className="text-xs text-gray-500 mb-2">What They Said</div>
               <p className="text-sm text-gray-300">{c.quote}</p>
             </div>
           </div>
