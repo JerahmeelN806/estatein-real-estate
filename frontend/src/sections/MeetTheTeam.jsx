@@ -15,7 +15,7 @@ function MeetTheTeam() {
       </p>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-        {team.map((member) => (
+        {team.map((member) => ( 
           <div key={member.name} className="bg-[#151517] rounded-2xl overflow-hidden">
             <div className="relative">
               <img

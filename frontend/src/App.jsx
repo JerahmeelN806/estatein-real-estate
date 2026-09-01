@@ -1,18 +1,20 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom"
-import AnnouncementBar from "./sections/AnnouncementBar"
-import Navbar from "./sections/Navbar"
-import Hero from "./sections/Hero"
-import QuickLinks from "./sections/QuickLinks"
-import FeaturedProperties from "./sections/FeaturedProperties"
-import Testimonials from "./sections/Testimonials"
-import FAQ from "./sections/FAQ"
-import CTA from "./sections/CTA"
-import Footer from "./sections/Footer"
-import OurJourney from "./sections/OurJourney"
-import OurAchievements from "./sections/OurAchievements"
-import NavigatingExperience from "./sections/NavigatingExperience"
-import MeetTheTeam from "./sections/MeetTheTeam"
-import ValuedClients from "./sections/ValuedClients"
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import AnnouncementBar from "./sections/AnnouncementBar";
+import Navbar from "./sections/Navbar";
+import Hero from "./sections/Hero";
+import QuickLinks from "./sections/QuickLinks";
+import FeaturedProperties from "./sections/FeaturedProperties";
+import Testimonials from "./sections/Testimonials";
+import FAQ from "./sections/FAQ";
+import CTA from "./sections/CTA";
+import Footer from "./sections/Footer";
+import OurJourney from "./sections/OurJourney";
+import OurAchievements from "./sections/OurAchievements";
+import NavigatingExperience from "./sections/NavigatingExperience";
+import MeetTheTeam from "./sections/MeetTheTeam";
+import ValuedClients from "./sections/ValuedClients";
+import PropertiesHero from "./sections/PropertiesHero";
+import DiscoverCategories from "./sections/DiscoverCategories";
 
 function HomePage() {
   return (
@@ -24,7 +26,7 @@ function HomePage() {
       <FAQ />
       <CTA />
     </>
-  )
+  );
 }
 
 function AboutPage() {
@@ -32,24 +34,28 @@ function AboutPage() {
     {
       icon: "★",
       title: "Trust",
-      description: "Trust is the cornerstone of every successful real estate transaction.",
+      description:
+        "Trust is the cornerstone of every successful real estate transaction.",
     },
     {
       icon: "🎓",
       title: "Excellence",
-      description: "We set the bar high for ourselves. From the properties we list to the services we provide.",
+      description:
+        "We set the bar high for ourselves. From the properties we list to the services we provide.",
     },
     {
       icon: "👥",
       title: "Client-Centric",
-      description: "Your dreams and needs are at the center of our universe. We listen, understand.",
+      description:
+        "Your dreams and needs are at the center of our universe. We listen, understand.",
     },
     {
       icon: "★",
       title: "Our Commitment",
-      description: "We are dedicated to providing you with the highest level of service, professionalism.",
+      description:
+        "We are dedicated to providing you with the highest level of service, professionalism.",
     },
-  ]
+  ];
 
   return (
     <>
@@ -65,9 +71,9 @@ function AboutPage() {
           <div>
             <h2 className="text-2xl md:text-3xl font-bold mb-4">Our Values</h2>
             <p className="text-gray-400 text-sm max-w-md">
-              Our story is one of continuous growth and evolution. We started as a small team
-              with big dreams, determined to create a real estate platform that transcended
-              the ordinary.
+              Our story is one of continuous growth and evolution. We started as
+              a small team with big dreams, determined to create a real estate
+              platform that transcended the ordinary.
             </p>
           </div>
 
@@ -93,7 +99,17 @@ function AboutPage() {
       <ValuedClients />
       <CTA />
     </>
-  )
+  );
+}
+
+function PropertiesPage() {
+  return (
+    <>
+      <PropertiesHero />
+      <DiscoverCategories />
+      <CTA />
+    </>
+  );
 }
 
 function App() {
@@ -105,11 +121,12 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/about" element={<AboutPage />} />
+          <Route path="/properties" element={<PropertiesPage />} />
         </Routes>
         <Footer />
       </div>
     </BrowserRouter>
-  )
+  );
 }
 
-export default App
+export default App;
