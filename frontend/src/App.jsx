@@ -15,6 +15,7 @@ import MeetTheTeam from "./sections/MeetTheTeam";
 import ValuedClients from "./sections/ValuedClients";
 import PropertiesHero from "./sections/PropertiesHero";
 import DiscoverCategories from "./sections/DiscoverCategories";
+import ContactForm from "./sections/ContactForm";
 
 function HomePage() {
   return (
@@ -107,6 +108,7 @@ function PropertiesPage() {
     <>
       <PropertiesHero />
       <DiscoverCategories />
+      <ContactForm />
       <CTA />
     </>
   );
