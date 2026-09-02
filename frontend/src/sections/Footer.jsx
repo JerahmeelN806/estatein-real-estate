@@ -186,7 +186,7 @@ function Footer() {
               ))}
             </div>
             <div className="flex flex-col items-center gap-1 md:flex-row md:gap-6 text-sm text-gray-400 text-center order-2 md:order-none">
-              <span>@2023 Estatein. All Rights Reserved.</span>
+              <span>@2026 Estatein. All Rights Reserved.</span>
               <a href="#" className="hover:text-white">
                 Terms &amp; Conditions
               </a>
