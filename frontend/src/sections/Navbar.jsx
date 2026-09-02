@@ -1,20 +1,51 @@
-import { useState } from "react"
-import { Link, useLocation } from "react-router-dom"
+import { useLayoutEffect, useRef, useState } from "react";
+import gsap from "gsap";
+import { Link, useLocation } from "react-router-dom";
 
 function Navbar() {
-  const [open, setOpen] = useState(false)
-  const location = useLocation()
+  const navRef = useRef(null);
+  const innerRef = useRef(null);
+  const [open, setOpen] = useState(false);
+  const location = useLocation();
 
   const links = [
     { label: "Home", path: "/" },
     { label: "About Us", path: "/about" },
     { label: "Properties", path: "/properties" },
     { label: "Services", path: "/services" },
-  ]
+  ];
+
+  useLayoutEffect(() => {
+    const nav = navRef.current;
+    const inner = innerRef.current;
+
+    if (!nav || !inner) return undefined;
+
+    const context = gsap.context(() => {
+      gsap.fromTo(
+        inner,
+        { y: -18, autoAlpha: 0 },
+        {
+          y: 0,
+          autoAlpha: 1,
+          duration: 0.55,
+          ease: "power3.out",
+        },
+      );
+    }, navRef);
+
+    return () => {
+      context.revert();
+      gsap.killTweensOf(inner);
+    };
+  }, []);
 
   return (
-    <nav className="px-6 md:px-8 py-5 relative bg-[#0f0f10] text-white">
-      <div className="flex items-center justify-between">
+    <nav
+      ref={navRef}
+      className="sticky top-0 z-40 px-6 md:px-8 relative bg-[#0f0f10] text-white border-b border-[#29292d] backdrop-blur-md"
+    >
+      <div ref={innerRef} className="flex items-center justify-between py-5">
         {/* Logo Section */}
         <Link to="/" className="flex items-center gap-2">
           <div className="w-6 h-6 bg-purple-600 rounded-full" />
@@ -49,9 +80,15 @@ function Navbar() {
           className="md:hidden flex flex-col gap-1.5 justify-center items-center w-8 h-8 focus:outline-none"
           aria-label="Toggle menu"
         >
-          <span className={`block w-6 h-0.5 bg-white transition-transform duration-300 ${open ? "rotate-45 translate-y-2" : ""}`} />
-          <span className={`block w-6 h-0.5 bg-white transition-opacity duration-300 ${open ? "opacity-0" : ""}`} />
-          <span className={`block w-6 h-0.5 bg-white transition-transform duration-300 ${open ? "-rotate-45 -translate-y-2" : ""}`} />
+          <span
+            className={`block w-6 h-0.5 bg-white transition-transform duration-300 ${open ? "rotate-45 translate-y-2" : ""}`}
+          />
+          <span
+            className={`block w-6 h-0.5 bg-white transition-opacity duration-300 ${open ? "opacity-0" : ""}`}
+          />
+          <span
+            className={`block w-6 h-0.5 bg-white transition-transform duration-300 ${open ? "-rotate-45 -translate-y-2" : ""}`}
+          />
         </button>
       </div>
 
@@ -78,7 +115,7 @@ function Navbar() {
         </div>
       )}
     </nav>
-  )
+  );
 }
 
-export default Navbar
+export default Navbar;

@@ -1,20 +1,24 @@
-import { useState } from "react"
-import { properties as allProperties } from "../data/properties"
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import { properties as allProperties } from "../data/properties";
 
 function FeaturedProperties() {
-  const [page, setPage] = useState(0)
-  const [expanded, setExpanded] = useState({})
-  const perPage = 3
-  const totalPages = Math.ceil(allProperties.length / perPage)
+  const [page, setPage] = useState(0);
+  const [expanded, setExpanded] = useState({});
+  const perPage = 3;
+  const totalPages = Math.ceil(allProperties.length / perPage);
 
-  const visibleProperties = allProperties.slice(page * perPage, page * perPage + perPage)
+  const visibleProperties = allProperties.slice(
+    page * perPage,
+    page * perPage + perPage,
+  );
 
   const toggleExpanded = (title) => {
-    setExpanded((prev) => ({ ...prev, [title]: !prev[title] }))
-  }
+    setExpanded((prev) => ({ ...prev, [title]: !prev[title] }));
+  };
 
-  const goPrev = () => setPage((p) => (p === 0 ? totalPages - 1 : p - 1))
-  const goNext = () => setPage((p) => (p === totalPages - 1 ? 0 : p + 1))
+  const goPrev = () => setPage((p) => (p === 0 ? totalPages - 1 : p - 1));
+  const goNext = () => setPage((p) => (p === totalPages - 1 ? 0 : p + 1));
 
   return (
     <section className="px-6 md:px-8 py-12 max-w-7xl mx-auto">
@@ -24,18 +28,27 @@ function FeaturedProperties() {
       </div>
 
       <div className="mb-8">
-        <h2 className="text-2xl md:text-3xl font-bold mb-2">Featured Properties</h2>
+        <h2 className="text-2xl md:text-3xl font-bold mb-2">
+          Featured Properties
+        </h2>
         <p className="text-gray-400 text-sm max-w-xl">
-          Explore our handpicked selection of featured properties. Each listing offers
-          a glimpse into exceptional homes and investments available through Estatein.
-          Click "View Details" for more information.
+          Explore our handpicked selection of featured properties. Each listing
+          offers a glimpse into exceptional homes and investments available
+          through Estatein. Click "View Details" for more information.
         </p>
       </div>
 
       <div className="grid md:grid-cols-3 gap-6">
         {visibleProperties.map((p) => (
-          <div key={p.title} className="bg-[#151517] rounded-2xl overflow-hidden">
-            <img src={p.image} alt={p.title} className="w-full h-48 object-cover" />
+          <div
+            key={p.title}
+            className="bg-[#151517] rounded-2xl overflow-hidden"
+          >
+            <img
+              src={p.image}
+              alt={p.title}
+              className="w-full h-48 object-cover"
+            />
             <div className="p-5">
               <h3 className="font-semibold mb-1">{p.title}</h3>
               <p className="text-gray-400 text-sm mb-4">
@@ -65,9 +78,12 @@ function FeaturedProperties() {
                   <div className="text-xs text-gray-500">Price</div>
                   <div className="font-semibold">{p.price}</div>
                 </div>
-                <button className="bg-purple-600 px-4 py-2.5 rounded-full text-sm hover:bg-purple-700">
+                <Link
+                  to={`/properties/${p.id}`}
+                  className="bg-purple-600 px-4 py-2.5 rounded-full text-sm hover:bg-purple-700"
+                >
                   View Property Details
-                </button>
+                </Link>
               </div>
             </div>
           </div>
@@ -80,7 +96,8 @@ function FeaturedProperties() {
         </button>
         <div className="flex items-center justify-between">
           <span className="text-xs text-gray-500">
-            {String(page + 1).padStart(2, "0")} of {String(totalPages).padStart(2, "0")}
+            {String(page + 1).padStart(2, "0")} of{" "}
+            {String(totalPages).padStart(2, "0")}
           </span>
           <div className="flex gap-2">
             <button
@@ -99,7 +116,7 @@ function FeaturedProperties() {
         </div>
       </div>
     </section>
-  )
+  );
 }
 
-export default FeaturedProperties
+export default FeaturedProperties;

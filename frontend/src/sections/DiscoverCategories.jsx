@@ -1,7 +1,10 @@
-import { useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
+import gsap from "gsap";
+import { Link } from "react-router-dom";
 import { propertyCategories } from "../data/propertyCategories";
 
 function DiscoverCategories() {
+  const sectionRef = useRef(null);
   const [categoryIndex, setCategoryIndex] = useState(0);
   const [expanded, setExpanded] = useState({});
   const perPage = 3;
@@ -21,8 +24,30 @@ function DiscoverCategories() {
   const goNext = () =>
     setCategoryIndex((p) => (p === totalPages - 1 ? 0 : p + 1));
 
+  useLayoutEffect(() => {
+    const cards = sectionRef.current?.querySelectorAll("[data-category-card]");
+
+    if (!cards?.length) return undefined;
+
+    const context = gsap.context(() => {
+      gsap.fromTo(
+        cards,
+        { autoAlpha: 0, y: 28 },
+        {
+          autoAlpha: 1,
+          y: 0,
+          duration: 0.65,
+          ease: "power3.out",
+          stagger: 0.1,
+        },
+      );
+    }, sectionRef);
+
+    return () => context.revert();
+  }, [categoryIndex]);
+
   return (
-    <section className="px-6 md:px-8 py-12 max-w-7xl mx-auto">
+    <section ref={sectionRef} className="px-6 md:px-8 py-12 max-w-7xl mx-auto">
       {/* Header */}
       <div className="flex items-center gap-2 text-purple-500 text-sm mb-3">
         <span>✦</span>
@@ -43,6 +68,7 @@ function DiscoverCategories() {
         {visibleCategories.map((category) => (
           <div
             key={category.title}
+            data-category-card
             className="bg-[#151517] rounded-2xl overflow-hidden"
           >
             {/* Image */}
@@ -79,9 +105,12 @@ function DiscoverCategories() {
                   <div className="text-xs text-gray-500">Price</div>
                   <div className="font-semibold">{category.price}</div>
                 </div>
-                <button className="bg-purple-600 hover:bg-purple-700 transition-colors px-4 py-2.5 rounded-full text-sm whitespace-nowrap">
+                <Link
+                  to="/properties"
+                  className="bg-purple-600 hover:bg-purple-700 transition-colors px-4 py-2.5 rounded-full text-sm whitespace-nowrap"
+                >
                   View Property Details
-                </button>
+                </Link>
               </div>
             </div>
           </div>

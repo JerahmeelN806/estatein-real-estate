@@ -1,7 +1,7 @@
 export const propertyCategories = [
   {
     image:
-      "https://images.unsplash.com/photo-1551632786-de41ec6a05ae?w=500&q=80",
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=500&q=80",
     tag: "Coastal Escapes - Where Waves Beckon",
     title: "Seaside Serenity Villa",
     description:
@@ -23,7 +23,7 @@ export const propertyCategories = [
   },
   {
     image:
-      "https://images.unsplash.com/photo-1572120471610-0ecebb66f4d3?w=500&q=80",
+      "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=500&q=80",
     tag: "Countryside Charm - Escape to Nature's Embrace",
     title: "Rustic Retreat Cottage",
     description:

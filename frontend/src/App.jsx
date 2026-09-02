@@ -16,6 +16,7 @@ import ValuedClients from "./sections/ValuedClients";
 import PropertiesHero from "./sections/PropertiesHero";
 import DiscoverCategories from "./sections/DiscoverCategories";
 import ContactForm from "./sections/ContactForm";
+import PropertyDetailPage from "./pages/PropertyDetailPage";
 
 function HomePage() {
   return (
@@ -124,6 +125,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/properties" element={<PropertiesPage />} />
+          <Route path="/properties/:id" element={<PropertyDetailPage />} />
         </Routes>
         <Footer />
       </div>
