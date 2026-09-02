@@ -154,19 +154,34 @@ function PropertyDetailPage() {
           <div className="grid grid-cols-3 border-y border-[#29292d] mt-8 py-5">
             <div className="border-r border-[#29292d] pr-3">
               <p className="text-xs text-gray-500 mb-2">
-                <span className="mr-2">🛏</span>Bedrooms
+                <img
+                  src={property.gallery[0]}
+                  alt=""
+                  className="inline-block w-5 h-5 rounded-full object-cover mr-2 align-middle"
+                />
+                Bedrooms
               </p>
               <p className="font-semibold">{property.beds}</p>
             </div>
             <div className="border-r border-[#29292d] px-3">
               <p className="text-xs text-gray-500 mb-2">
-                <span className="mr-2">🛁</span>Bathrooms
+                <img
+                  src={property.gallery[1]}
+                  alt=""
+                  className="inline-block w-5 h-5 rounded-full object-cover mr-2 align-middle"
+                />
+                Bathrooms
               </p>
               <p className="font-semibold">{property.baths}</p>
             </div>
             <div className="pl-3">
               <p className="text-xs text-gray-500 mb-2">
-                <span className="mr-2">⌗</span>Area
+                <img
+                  src={property.gallery[2]}
+                  alt=""
+                  className="inline-block w-5 h-5 rounded-full object-cover mr-2 align-middle"
+                />
+                Area
               </p>
               <p className="font-semibold">{property.area}</p>
             </div>

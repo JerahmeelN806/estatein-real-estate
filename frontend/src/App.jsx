@@ -17,6 +17,7 @@ import PropertiesHero from "./sections/PropertiesHero";
 import DiscoverCategories from "./sections/DiscoverCategories";
 import ContactForm from "./sections/ContactForm";
 import PropertyDetailPage from "./pages/PropertyDetailPage";
+import { propertyCategories } from "./data/propertyCategories";
 
 function HomePage() {
   return (
@@ -34,25 +35,25 @@ function HomePage() {
 function AboutPage() {
   const values = [
     {
-      icon: "★",
+      image: propertyCategories[0].image,
       title: "Trust",
       description:
         "Trust is the cornerstone of every successful real estate transaction.",
     },
     {
-      icon: "🎓",
+      image: propertyCategories[1].image,
       title: "Excellence",
       description:
         "We set the bar high for ourselves. From the properties we list to the services we provide.",
     },
     {
-      icon: "👥",
+      image: propertyCategories[2].image,
       title: "Client-Centric",
       description:
         "Your dreams and needs are at the center of our universe. We listen, understand.",
     },
     {
-      icon: "★",
+      image: propertyCategories[3].image,
       title: "Our Commitment",
       description:
         "We are dedicated to providing you with the highest level of service, professionalism.",
@@ -83,9 +84,11 @@ function AboutPage() {
             {values.map((v) => (
               <div key={v.title}>
                 <div className="flex items-center gap-3 mb-3">
-                  <div className="w-10 h-10 rounded-full bg-purple-600/20 flex items-center justify-center text-purple-400">
-                    {v.icon}
-                  </div>
+                  <img
+                    src={v.image}
+                    alt=""
+                    className="w-10 h-10 rounded-full object-cover"
+                  />
                   <h3 className="font-semibold">{v.title}</h3>
                 </div>
                 <p className="text-gray-400 text-sm">{v.description}</p>

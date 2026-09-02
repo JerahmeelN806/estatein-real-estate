@@ -1,4 +1,4 @@
-import { team } from "../data/team"
+import { team } from "../data/team";
 
 function MeetTheTeam() {
   return (
@@ -8,15 +8,21 @@ function MeetTheTeam() {
         <span className="w-1.5 h-1.5 rounded-full bg-gray-600" />
       </div>
 
-      <h2 className="text-2xl md:text-3xl font-bold mb-3">Meet the Estatein Team</h2>
+      <h2 className="text-2xl md:text-3xl font-bold mb-3">
+        Meet the Estatein Team
+      </h2>
       <p className="text-gray-400 text-sm max-w-xl mb-8">
-        At Estatein, our success is driven by the dedication and expertise of our team.
-        Get to know the people behind our mission to make your real estate dreams a reality.
+        At Estatein, our success is driven by the dedication and expertise of
+        our team. Get to know the people behind our mission to make your real
+        estate dreams a reality.
       </p>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-        {team.map((member) => ( 
-          <div key={member.name} className="bg-[#151517] rounded-2xl overflow-hidden">
+        {team.map((member) => (
+          <div
+            key={member.name}
+            className="bg-[#151517] rounded-2xl overflow-hidden"
+          >
             <div className="relative">
               <img
                 src={member.photo}
@@ -24,7 +30,11 @@ function MeetTheTeam() {
                 className="w-full h-40 object-cover"
               />
               <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center">
-                <span className="text-white text-xs font-bold">𝕏</span>
+                <img
+                  src="https://cdn.simpleicons.org/x/ffffff"
+                  alt="X"
+                  className="w-4 h-4 object-contain"
+                />
               </div>
             </div>
             <div className="pt-6 pb-4 px-3 text-center">
@@ -41,7 +51,7 @@ function MeetTheTeam() {
         ))}
       </div>
     </section>
-  )
+  );
 }
 
-export default MeetTheTeam
+export default MeetTheTeam;

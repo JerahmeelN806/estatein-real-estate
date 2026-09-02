@@ -63,13 +63,28 @@ function FeaturedProperties() {
 
               <div className="flex flex-wrap gap-2 mb-4 text-xs text-gray-300">
                 <span className="bg-[#0d0d0f] px-3 py-1.5 rounded-full flex items-center gap-1">
-                  🛏 {p.beds}-Bedroom
+                  <img
+                    src={p.image}
+                    alt=""
+                    className="w-4 h-4 rounded-full object-cover"
+                  />
+                  {p.beds}-Bedroom
                 </span>
                 <span className="bg-[#0d0d0f] px-3 py-1.5 rounded-full flex items-center gap-1">
-                  🛁 {p.baths}-Bathroom
+                  <img
+                    src={p.gallery[1]}
+                    alt=""
+                    className="w-4 h-4 rounded-full object-cover"
+                  />
+                  {p.baths}-Bathroom
                 </span>
                 <span className="bg-[#0d0d0f] px-3 py-1.5 rounded-full flex items-center gap-1">
-                  🏠 {p.type}
+                  <img
+                    src={p.gallery[2]}
+                    alt=""
+                    className="w-4 h-4 rounded-full object-cover"
+                  />
+                  {p.type}
                 </span>
               </div>
 

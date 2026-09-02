@@ -1,14 +1,15 @@
 import { useState } from "react";
+import { propertyCategories } from "../data/propertyCategories";
 
 function PropertiesHero() {
   const [searchQuery, setSearchQuery] = useState("");
 
   const filters = [
-    { label: "Location", icon: "📍" },
-    { label: "Property Type", icon: "🏠" },
-    { label: "Pricing Range", icon: "💰" },
-    { label: "Property Size", icon: "📐" },
-    { label: "Build Year", icon: "📅" },
+    { label: "Location", image: propertyCategories[0].image },
+    { label: "Property Type", image: propertyCategories[1].image },
+    { label: "Pricing Range", image: propertyCategories[2].image },
+    { label: "Property Size", image: propertyCategories[3].image },
+    { label: "Build Year", image: propertyCategories[4].image },
   ];
 
   return (
@@ -39,7 +40,11 @@ function PropertiesHero() {
           className="flex-1 bg-[#151517] border border-gray-600 rounded-full px-6 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-purple-600 transition-colors"
         />
         <button className="bg-purple-600 hover:bg-purple-700 transition-colors px-8 py-3 rounded-full text-sm font-medium whitespace-nowrap flex items-center justify-center gap-2">
-          <span>🔍</span>
+          <img
+            src={propertyCategories[0].image}
+            alt=""
+            className="w-5 h-5 rounded-full object-cover"
+          />
           <span>Find Property</span>
         </button>
       </div>
@@ -51,7 +56,11 @@ function PropertiesHero() {
             key={filter.label}
             className="bg-[#151517] border border-gray-600 rounded-full px-4 py-2.5 text-sm text-gray-300 hover:border-purple-600 transition-colors flex items-center gap-2"
           >
-            <span>{filter.icon}</span>
+            <img
+              src={filter.image}
+              alt=""
+              className="w-5 h-5 rounded-full object-cover"
+            />
             <span>{filter.label}</span>
             <span className="text-xs">▼</span>
           </button>
