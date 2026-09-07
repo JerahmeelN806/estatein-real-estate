@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { submitContactMessage } from "../api/contact";
 
 function ContactForm() {
   const [formData, setFormData] = useState({
@@ -15,6 +16,9 @@ function ContactForm() {
     message: "",
     agreeToTerms: false,
   });
+  const [submitting, setSubmitting] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -29,6 +33,30 @@ function ContactForm() {
       ...prev,
       preferredContact: method,
     }));
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setSubmitting(true);
+    setSuccessMessage("");
+    setErrorMessage("");
+
+    try {
+      await submitContactMessage({
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        phone: formData.phone,
+        message: formData.message,
+      });
+      setSuccessMessage("Message sent successfully.");
+    } catch (error) {
+      setErrorMessage(
+        error.message || "We couldn't send your message. Please try again.",
+      );
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -51,7 +79,7 @@ function ContactForm() {
 
       {/* Form Panel */}
       <div className="border border-[#232326] rounded-3xl p-6 md:p-8">
-        <form className="space-y-6">
+        <form className="space-y-6" onSubmit={handleSubmit}>
           {/* Row 1: First Name, Last Name, Email, Phone */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <div>
@@ -299,11 +327,19 @@ function ContactForm() {
 
             <button
               type="submit"
+              disabled={submitting}
               className="bg-purple-600 hover:bg-purple-700 transition-colors px-8 py-3 rounded-full text-sm font-medium whitespace-nowrap"
             >
-              Send Your Message
+              {submitting ? "Sending..." : "Send Your Message"}
             </button>
           </div>
+
+          {successMessage && (
+            <p className="text-sm text-green-400">{successMessage}</p>
+          )}
+          {errorMessage && (
+            <p className="text-sm text-red-400">{errorMessage}</p>
+          )}
         </form>
       </div>
     </section>

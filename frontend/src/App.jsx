@@ -18,6 +18,23 @@ import DiscoverCategories from "./sections/DiscoverCategories";
 import ContactForm from "./sections/ContactForm";
 import PropertyDetailPage from "./pages/PropertyDetailPage";
 import { propertyCategories } from "./data/propertyCategories";
+import ServicesHero from "./sections/ServicesHero";
+import ServiceCategory from "./sections/ServiceCategory";
+import {
+  sellingServices,
+  managementServices,
+  investmentServices,
+} from "./data/services";
+import ContactHero from "./sections/ContactHero";
+import ContactDetailsForm from "./sections/ContactDetailsForm";
+import OfficeLocations from "./sections/OfficeLocations";
+import ExploreGallery from "./sections/ExploreGallery";
+import AdminLoginPage from "./pages/AdminLoginPage";
+import AdminDashboardPage from "./pages/AdminDashboardPage";
+import ProtectedRoute from "./components/ProtectedRoute";
+import { AuthProvider } from "./context/AuthContext";
+import ForgotPasswordPage from "./pages/ForgotPasswordPage";
+import ResetPasswordPage from "./pages/ResetPasswordPage";
 
 function HomePage() {
   return (
@@ -118,21 +135,88 @@ function PropertiesPage() {
   );
 }
 
+function ServicesPage() {
+  return (
+    <>
+      <ServicesHero />
+
+      <ServiceCategory
+        heading="Unlock Property Value"
+        description="Discover the expertise and strategies that help property owners achieve exceptional results."
+        services={sellingServices}
+        layout="grid-with-featured-right"
+        featuredTitle="Unlock the Value of Your Property Today"
+        featuredDescription="Ready to unlock the true value of your property? Explore our Property Selling Service categories and let us help you achieve the best deal possible for your valuable asset."
+      />
+
+      <ServiceCategory
+        heading="Effortless Property Management"
+        description="Enjoy the benefits of property ownership while our experts handle the details."
+        services={managementServices}
+        layout="grid-with-featured-right"
+        featuredTitle="Experience Effortless Property Management"
+        featuredDescription="Ready to experience hassle-free property management? Explore our Property Management Service categories and let us handle the complexities while you enjoy the benefits of property ownership."
+      />
+
+      <ServiceCategory
+        heading="Smart Investments, Informed Decisions"
+        description="Make informed real estate decisions with market intelligence and investment strategies built around your goals."
+        services={investmentServices}
+        layout="featured-left-with-grid"
+        featuredTitle="Unlock Your Investment Potential"
+        featuredDescription="Explore our Property Management Service categories and let us handle the complexities while you enjoy the benefits of property ownership."
+      />
+
+      <CTA />
+    </>
+  );
+}
+
+function ContactPage() {
+  return (
+    <>
+      <ContactHero />
+      <ContactDetailsForm />
+      <OfficeLocations />
+      <ExploreGallery />
+      <CTA />
+    </>
+  );
+}
+
 function App() {
   return (
-    <BrowserRouter>
-      <div className="min-h-screen bg-[#0d0d0f] text-white">
-        <AnnouncementBar />
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="/properties" element={<PropertiesPage />} />
-          <Route path="/properties/:id" element={<PropertyDetailPage />} />
-        </Routes>
-        <Footer />
-      </div>
-    </BrowserRouter>
+    <AuthProvider>
+      <BrowserRouter>
+        <div className="min-h-screen bg-[#0d0d0f] text-white">
+          <AnnouncementBar />
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/properties" element={<PropertiesPage />} />
+            <Route path="/properties/:id" element={<PropertyDetailPage />} />
+            <Route path="/services" element={<ServicesPage />} />
+            <Route path="/contact" element={<ContactPage />} />
+            <Route path="/admin/login" element={<AdminLoginPage />} />
+            <Route
+              path="/admin/forgot-password"
+              element={<ForgotPasswordPage />}
+            />
+            <Route path="/reset-password" element={<ResetPasswordPage />} />
+            <Route
+              path="/admin"
+              element={
+                <ProtectedRoute>
+                  <AdminDashboardPage />
+                </ProtectedRoute>
+              }
+            />
+          </Routes>
+          <Footer />
+        </div>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
 

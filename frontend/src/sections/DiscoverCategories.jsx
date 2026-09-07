@@ -1,16 +1,55 @@
-import { useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
-import { Link } from "react-router-dom";
-import { propertyCategories } from "../data/propertyCategories";
+import { Link, useSearchParams } from "react-router-dom";
+import { getProperties } from "../api/properties";
 
 function DiscoverCategories() {
   const sectionRef = useRef(null);
+  const [properties, setProperties] = useState([]);
   const [categoryIndex, setCategoryIndex] = useState(0);
   const [expanded, setExpanded] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [searchParams] = useSearchParams();
   const perPage = 3;
-  const totalPages = Math.ceil(propertyCategories.length / perPage);
+  const totalPages = Math.ceil(properties.length / perPage);
 
-  const visibleCategories = propertyCategories.slice(
+  useEffect(() => {
+    let active = true;
+    const filters = Object.fromEntries(searchParams.entries());
+    delete filters.priceRange;
+
+    async function loadProperties() {
+      try {
+        setLoading(true);
+        setError("");
+        const fetchedProperties = await getProperties(filters);
+
+        if (active) {
+          setProperties(fetchedProperties);
+          setCategoryIndex(0);
+        }
+      } catch {
+        if (active) {
+          setError(
+            "We couldn't load the properties right now. Please try again.",
+          );
+        }
+      } finally {
+        if (active) {
+          setLoading(false);
+        }
+      }
+    }
+
+    loadProperties();
+
+    return () => {
+      active = false;
+    };
+  }, [searchParams]);
+
+  const visibleCategories = properties.slice(
     categoryIndex * perPage,
     categoryIndex * perPage + perPage,
   );
@@ -65,63 +104,77 @@ function DiscoverCategories() {
 
       {/* Category Cards Grid */}
       <div className="grid md:grid-cols-3 gap-6 mb-8">
-        {visibleCategories.map((category) => (
-          <div
-            key={category.title}
-            data-category-card
-            className="bg-[#151517] rounded-2xl overflow-hidden"
-          >
-            {/* Image */}
-            <img
-              src={category.image}
-              alt={category.title}
-              className="w-full h-48 object-cover rounded-2xl rounded-b-none"
-            />
+        {loading && <p className="text-gray-400 text-sm">Loading...</p>}
 
-            {/* Content */}
-            <div className="p-5">
-              {/* Tag */}
-              <p className="text-xs text-gray-500 mb-2">{category.tag}</p>
+        {!loading && error && (
+          <p className="text-gray-400 text-sm md:col-span-3">{error}</p>
+        )}
 
-              {/* Title */}
-              <h3 className="text-lg font-semibold mb-3">{category.title}</h3>
+        {!loading &&
+          !error &&
+          visibleCategories.map((category) => (
+            <div
+              key={category.id || category.title}
+              data-category-card
+              className="bg-[#151517] rounded-2xl overflow-hidden"
+            >
+              {/* Image */}
+              <img
+                src={category.image}
+                alt={category.title}
+                className="w-full h-48 object-cover rounded-2xl rounded-b-none"
+              />
 
-              {/* Description with Read More toggle */}
-              <p className="text-gray-400 text-sm mb-4">
-                {expanded[category.title]
-                  ? category.fullDescription
-                  : category.description}{" "}
-                <button
-                  onClick={() => toggleExpanded(category.title)}
-                  className="text-white underline"
-                >
-                  {expanded[category.title] ? "Show Less" : "Read More"}
-                </button>
-              </p>
+              {/* Content */}
+              <div className="p-5">
+                {/* Tag */}
+                <p className="text-xs text-gray-500 mb-2">
+                  {category.type || "Property"} · {category.city}
+                </p>
 
-              {/* Price and Button */}
-              <div className="flex items-center justify-between">
-                <div>
-                  <div className="text-xs text-gray-500">Price</div>
-                  <div className="font-semibold">{category.price}</div>
+                {/* Title */}
+                <h3 className="text-lg font-semibold mb-3">{category.title}</h3>
+
+                {/* Description with Read More toggle */}
+                <p className="text-gray-400 text-sm mb-4">
+                  {expanded[category.title]
+                    ? category.fullDescription || category.description
+                    : category.description}{" "}
+                  <button
+                    onClick={() => toggleExpanded(category.title)}
+                    className="text-white underline"
+                  >
+                    {expanded[category.title] ? "Show Less" : "Read More"}
+                  </button>
+                </p>
+
+                {/* Price and Button */}
+                <div className="flex items-center justify-between">
+                  <div>
+                    <div className="text-xs text-gray-500">Price</div>
+                    <div className="font-semibold">
+                      ${Number(category.price).toLocaleString()}
+                    </div>
+                  </div>
+                  <Link
+                    to="/properties"
+                    className="bg-purple-600 hover:bg-purple-700 transition-colors px-4 py-2.5 rounded-full text-sm whitespace-nowrap"
+                  >
+                    View Property Details
+                  </Link>
                 </div>
-                <Link
-                  to="/properties"
-                  className="bg-purple-600 hover:bg-purple-700 transition-colors px-4 py-2.5 rounded-full text-sm whitespace-nowrap"
-                >
-                  View Property Details
-                </Link>
               </div>
             </div>
-          </div>
-        ))}
+          ))}
       </div>
 
       {/* Pagination Footer */}
       <div className="flex items-center justify-between">
         <span className="text-xs text-gray-500">
-          {String(categoryIndex + 1).padStart(2, "0")} of{" "}
-          {String(totalPages).padStart(2, "0")}
+          {String(
+            Math.min(categoryIndex + 1, Math.max(totalPages, 1)),
+          ).padStart(2, "0")}{" "}
+          of {String(Math.max(totalPages, 1)).padStart(2, "0")}
         </span>
         <div className="flex gap-2">
           <button

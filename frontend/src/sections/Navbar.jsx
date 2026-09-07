@@ -70,9 +70,16 @@ function Navbar() {
         </div>
 
         {/* Desktop Button */}
-        <button className="hidden md:block bg-[#151517] px-5 py-2.5 rounded-full text-sm hover:bg-[#1e1e21] transition-colors">
+        <Link
+          to="/contact"
+          className={`hidden md:block px-5 py-2.5 rounded-full text-sm transition-colors ${
+            location.pathname === "/contact"
+              ? "bg-purple-600 text-white"
+              : "bg-[#151517] hover:bg-[#1e1e21]"
+          }`}
+        >
           Contact Us
-        </button>
+        </Link>
 
         {/* Hamburger - mobile only */}
         <button
@@ -109,9 +116,17 @@ function Navbar() {
               {item.label}
             </Link>
           ))}
-          <button className="bg-purple-600 hover:bg-purple-700 transition-colors px-5 py-3 rounded-xl text-sm font-medium mt-2 text-center">
+          <Link
+            to="/contact"
+            onClick={() => setOpen(false)}
+            className={`px-5 py-3 rounded-xl text-sm font-medium mt-2 text-center transition-colors ${
+              location.pathname === "/contact"
+                ? "bg-purple-700"
+                : "bg-purple-600 hover:bg-purple-700"
+            }`}
+          >
             Contact Us
-          </button>
+          </Link>
         </div>
       )}
     </nav>
