@@ -1,0 +1,55 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id         Int      @id @default(autoincrement())
+  name       String
+  email      String   @unique
+  password   String
+  role       Role     @default(CLIENT)
+  avatarUrl  String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  properties Property[]
+  resetTokenHash      String?
+  resetTokenExpiresAt DateTime?
+}
+
+model Property {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  price       Float
+  status      String
+  type        String
+  city        String
+  bedrooms    Int
+  bathrooms   Int
+  image       String
+  agentId     Int
+  agent       User     @relation(fields: [agentId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model ContactMessage {
+  id        Int      @id @default(autoincrement())
+  firstName String
+  lastName  String
+  email     String
+  phone     String?
+  message   String
+  createdAt DateTime @default(now())
+}
+
+enum Role {
+  CLIENT
+  AGENT
+  ADMIN
+}
