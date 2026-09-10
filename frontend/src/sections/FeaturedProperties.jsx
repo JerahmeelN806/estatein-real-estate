@@ -1,284 +1,293 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { getProperties } from "../api/properties";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { animate, motion, useMotionValue, useReducedMotion } from "framer-motion";
 
-gsap.registerPlugin(ScrollTrigger);
+const properties = [
+  {
+    id: 1,
+    title: "Seaside Serenity Villa",
+    description:
+      "A stunning villa offering breathtaking ocean views and luxurious living spaces.",
+    fullDescription:
+      "A stunning villa offering breathtaking ocean views, spacious interiors, modern finishes, and luxurious living spaces perfect for relaxing and entertaining.",
+    price: "$1,250,000",
+    type: "Villa",
+    city: "Miami",
+    bedrooms: 4,
+    bathrooms: 3,
+    image:
+      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80",
+  },
+  {
+    id: 2,
+    title: "Metropolitan Haven",
+    description:
+      "A modern apartment located in the heart of the city with premium amenities.",
+    fullDescription:
+      "A modern apartment located in the heart of the city with premium amenities, stylish interiors, and easy access to restaurants, shopping, and entertainment.",
+    price: "$850,000",
+    type: "Apartment",
+    city: "New York",
+    bedrooms: 3,
+    bathrooms: 2,
+    image:
+      "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1200&q=80",
+  },
+  {
+    id: 3,
+    title: "Rustic Retreat Cottage",
+    description:
+      "A peaceful countryside retreat surrounded by beautiful natural scenery.",
+    fullDescription:
+      "A peaceful countryside retreat surrounded by beautiful natural scenery, featuring cozy living spaces and a relaxing atmosphere away from the city.",
+    price: "$650,000",
+    type: "House",
+    city: "Aspen",
+    bedrooms: 3,
+    bathrooms: 2,
+    image:
+      "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1200&q=80",
+  },
+  {
+    id: 4,
+    title: "Modern Luxury Residence",
+    description:
+      "A sophisticated residence featuring contemporary architecture and premium finishes.",
+    fullDescription:
+      "A sophisticated residence featuring contemporary architecture, premium finishes, spacious rooms, and a beautifully designed outdoor area.",
+    price: "$1,450,000",
+    type: "House",
+    city: "Los Angeles",
+    bedrooms: 5,
+    bathrooms: 4,
+    image:
+      "https://images.unsplash.com/photo-1600607688969-a5bfcd646154?auto=format&fit=crop&w=1200&q=80",
+  },
+  {
+    id: 5,
+    title: "Urban Skyline Apartment",
+    description:
+      "A stylish city apartment with spectacular skyline views.",
+    fullDescription:
+      "A stylish city apartment with spectacular skyline views, contemporary interiors, and excellent access to everything the city has to offer.",
+    price: "$920,000",
+    type: "Apartment",
+    city: "Chicago",
+    bedrooms: 3,
+    bathrooms: 2,
+    image:
+      "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1200&q=80",
+  },
+  {
+    id: 6,
+    title: "Elegant Family Villa",
+    description:
+      "A spacious family villa combining comfort, privacy, and modern design.",
+    fullDescription:
+      "A spacious family villa combining comfort, privacy, modern design, beautiful landscaping, and generous living areas.",
+    price: "$1,100,000",
+    type: "Villa",
+    city: "Orlando",
+    bedrooms: 4,
+    bathrooms: 3,
+    image:
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
+  },
+];
 
 function FeaturedProperties() {
-  const [allProperties, setAllProperties] = useState([]);
-  const [page, setPage] = useState(0);
   const [expanded, setExpanded] = useState({});
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
   const [isPaused, setIsPaused] = useState(false);
-  const perPage = 3;
-  const totalPages = Math.ceil(allProperties.length / perPage);
-
-  const headingRef = useRef(null);
-  const gridRef = useRef(null);
-  const autoPlayRef = useRef(null);
-  const resumeTimeoutRef = useRef(null);
+  const shouldReduceMotion = useReducedMotion();
+  const trackRef = useRef(null);
+  const animationRef = useRef(null);
+  const x = useMotionValue(0);
 
   useEffect(() => {
-    let active = true;
+    const track = trackRef.current;
+    if (!track || shouldReduceMotion) return undefined;
 
-    async function loadProperties() {
-      try {
-        setLoading(true);
-        setError("");
-        const fetchedProperties = await getProperties();
+    const startAnimation = () => {
+      const distance = track.scrollWidth / 2;
+      if (!distance) return;
 
-        if (active) {
-          setAllProperties(fetchedProperties);
-        }
-      } catch {
-        if (active) {
-          setError(
-            "We couldn't load the featured properties right now. Please try again.",
-          );
-        }
-      } finally {
-        if (active) {
-          setLoading(false);
-        }
-      }
-    }
+      animationRef.current?.stop();
+      x.set(0);
+      animationRef.current = animate(x, -distance, {
+        duration: Math.max(distance / 42, 20),
+        ease: "linear",
+        repeat: Infinity,
+        repeatType: "loop",
+      });
 
-    loadProperties();
+    };
+
+    startAnimation();
+    const resizeObserver = new ResizeObserver(startAnimation);
+    resizeObserver.observe(track);
 
     return () => {
-      active = false;
+      resizeObserver.disconnect();
+      animationRef.current?.stop();
     };
-  }, []);
-
-  // Heading fade-in on scroll, once
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        headingRef.current,
-        { opacity: 0, y: 40 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 1.6,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: headingRef.current,
-            start: "top 85%",
-            toggleActions: "play none none reverse",
-          },
-        }
-      );
-    });
-    return () => ctx.revert();
-  }, []);
-
-  // Cards slide in horizontally + images reveal, replays every time the page changes
-  useEffect(() => {
-    if (loading || error || !gridRef.current) return;
-
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        gridRef.current.querySelectorAll(".property-card"),
-        { opacity: 0, x: 60 },
-        {
-          opacity: 1,
-          x: 0,
-          duration: 0.8,
-          ease: "power3.out",
-          stagger: 0.12,
-        }
-      );
-
-      gridRef.current.querySelectorAll(".property-image-wrap").forEach((wrap) => {
-        const img = wrap.querySelector("img");
-        gsap.fromTo(
-          wrap,
-          { clipPath: "inset(0 0 100% 0)" },
-          {
-            clipPath: "inset(0 0 0% 0)",
-            duration: 1,
-            ease: "power3.inOut",
-          }
-        );
-        gsap.fromTo(
-          img,
-          { scale: 1.2 },
-          {
-            scale: 1,
-            duration: 1.3,
-            ease: "power2.out",
-          }
-        );
-      });
-    }, gridRef);
-
-    return () => ctx.revert();
-  }, [page, loading, error, allProperties]);
-
-  // Auto-play: advance to next page every 5 seconds, unless paused
-  useEffect(() => {
-    if (loading || error || totalPages <= 1 || isPaused) return;
-
-    autoPlayRef.current = setInterval(() => {
-      setPage((p) => (p === totalPages - 1 ? 0 : p + 1));
-    }, 5000);
-
-    return () => clearInterval(autoPlayRef.current);
-  }, [loading, error, totalPages, isPaused]);
-
-  const pauseThenResume = () => {
-    setIsPaused(true);
-    clearTimeout(resumeTimeoutRef.current);
-    resumeTimeoutRef.current = setTimeout(() => setIsPaused(false), 8000);
-  };
+  }, [shouldReduceMotion, x]);
 
   useEffect(() => {
-    return () => clearTimeout(resumeTimeoutRef.current);
-  }, []);
+    if (isPaused) {
+      animationRef.current?.pause();
+    } else {
+      animationRef.current?.play();
+    }
+  }, [isPaused]);
 
-  const visibleProperties = allProperties.slice(
-    page * perPage,
-    page * perPage + perPage,
-  );
-
-  const toggleExpanded = (title) => {
-    setExpanded((prev) => ({ ...prev, [title]: !prev[title] }));
+  const toggleExpanded = (id) => {
+    setExpanded((previous) => ({
+      ...previous,
+      [id]: !previous[id],
+    }));
   };
 
-  const goPrev = () => {
-    setPage((p) => (p === 0 ? totalPages - 1 : p - 1));
-    pauseThenResume();
-  };
-  const goNext = () => {
-    setPage((p) => (p === totalPages - 1 ? 0 : p + 1));
-    pauseThenResume();
-  };
 
   return (
     <section
-      className="px-6 md:px-8 py-12 max-w-7xl mx-auto"
+      className={`py-12 ${shouldReduceMotion ? "overflow-x-auto" : "overflow-hidden"}`}
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
+      <div className="px-6 md:px-8 max-w-7xl mx-auto">
       <div className="flex items-center gap-2 text-purple-500 text-sm mb-3">
         <span>✦</span>
         <span className="w-1.5 h-1.5 rounded-full bg-gray-600" />
       </div>
 
-      <div ref={headingRef} className="mb-8">
+      <motion.div
+        className="mb-8"
+        initial={shouldReduceMotion ? false : { opacity: 0, y: 28 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 0.55, ease: "easeOut" }}
+      >
         <h2 className="text-2xl md:text-3xl font-bold mb-2">
           Featured Properties
         </h2>
+
         <p className="text-gray-400 text-sm max-w-xl">
-          Explore our handpicked selection of featured properties. Each listing
-          offers a glimpse into exceptional homes and investments available
-          through Estatein. Click "View Details" for more information.
+          Explore our handpicked selection of featured properties. Each
+          listing offers a glimpse into exceptional homes and investments
+          available through Estatein. Click "View Details" for more
+          information.
         </p>
+      </motion.div>
+
       </div>
 
-      <div ref={gridRef} className="grid md:grid-cols-3 gap-6">
-        {loading && <p className="text-gray-400 text-sm">Loading...</p>}
+      <motion.div
+        ref={trackRef}
+        className="flex gap-6 w-max px-6 md:px-8"
+        style={{ x }}
+        initial="hidden"
+        animate="visible"
+        variants={{
+          hidden: {},
+          visible: {
+            transition: {
+              staggerChildren: shouldReduceMotion ? 0 : 0.12,
+            },
+          },
+        }}
+      >
+        {(shouldReduceMotion ? properties : [...properties, ...properties]).map((property, index) => (
+          <motion.article
+            key={`${index}-${property.id}`}
+            className="w-[min(86vw,23rem)] shrink-0 bg-[#151517] rounded-2xl overflow-hidden"
+            variants={{
+              hidden: shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 24 },
+              visible: { opacity: 1, y: 0 },
+            }}
+            transition={{ duration: 0.45, ease: "easeOut" }}
+            whileHover={shouldReduceMotion ? undefined : { y: -6 }}
+          >
+            <div className="overflow-hidden">
+              <motion.img
+                src={property.image}
+                alt={property.title}
+                className="w-full h-48 object-cover"
+                initial={shouldReduceMotion ? false : { scale: 1.08 }}
+                animate={{ scale: 1 }}
+                transition={{ duration: 0.7, ease: "easeOut" }}
+              />
+            </div>
 
-        {!loading && error && (
-          <p className="text-gray-400 text-sm md:col-span-3">{error}</p>
-        )}
+            <div className="p-5">
+              <h3 className="font-semibold mb-1">{property.title}</h3>
 
-        {!loading &&
-          !error &&
-          visibleProperties.map((p) => (
-            <div
-              key={p.id || p.title}
-              className="property-card bg-[#151517] rounded-2xl overflow-hidden"
-            >
-              <div className="property-image-wrap overflow-hidden">
-                <img
-                  src={p.image}
-                  alt={p.title}
-                  className="w-full h-48 object-cover"
-                />
+              <p className="text-gray-400 text-sm mb-4">
+                {expanded[property.id]
+                  ? property.fullDescription
+                  : property.description}{" "}
+                <button
+                  type="button"
+                  onClick={() => toggleExpanded(property.id)}
+                  className="text-white underline"
+                >
+                  {expanded[property.id] ? "Show Less" : "Read More"}
+                </button>
+              </p>
+
+              <div className="flex flex-wrap gap-2 mb-4 text-xs text-gray-300">
+                <span className="bg-[#0d0d0f] px-3 py-1.5 rounded-full">
+                  🛏️ {property.bedrooms}-Bedroom
+                </span>
+
+                <span className="bg-[#0d0d0f] px-3 py-1.5 rounded-full">
+                  🛁 {property.bathrooms}-Bathroom
+                </span>
+
+                <span className="bg-[#0d0d0f] px-3 py-1.5 rounded-full">
+                  🏠 {property.type}
+                </span>
               </div>
-              <div className="p-5">
-                <h3 className="font-semibold mb-1">{p.title}</h3>
-                <p className="text-gray-400 text-sm mb-4">
-                  {expanded[p.title]
-                    ? p.fullDescription || p.description
-                    : p.description}{" "}
-                  <button
-                    onClick={() => toggleExpanded(p.title)}
-                    className="text-white underline"
-                  >
-                    {expanded[p.title] ? "Show Less" : "Read More"}
-                  </button>
-                </p>
 
-                <div className="flex flex-wrap gap-2 mb-4 text-xs text-gray-300">
-                  <span className="bg-[#0d0d0f] px-3 py-1.5 rounded-full flex items-center gap-1">
-                    <img
-                      src={p.image}
-                      alt=""
-                      className="w-4 h-4 rounded-full object-cover"
-                    />
-                    {p.bedrooms ?? p.beds}-Bedroom
-                  </span>
-                  <span className="bg-[#0d0d0f] px-3 py-1.5 rounded-full flex items-center gap-1">
-                    <img
-                      src={p.gallery?.[1] || p.image}
-                      alt=""
-                      className="w-4 h-4 rounded-full object-cover"
-                    />
-                    {p.bathrooms ?? p.baths}-Bathroom
-                  </span>
-                  <span className="bg-[#0d0d0f] px-3 py-1.5 rounded-full flex items-center gap-1">
-                    <img
-                      src={p.gallery?.[2] || p.image}
-                      alt=""
-                      className="w-4 h-4 rounded-full object-cover"
-                    />
-                    {p.type}
-                  </span>
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="text-xs text-gray-500">Price</div>
+                  <div className="font-semibold">{property.price}</div>
                 </div>
 
-                <div className="flex items-center justify-between">
-                  <div>
-                    <div className="text-xs text-gray-500">Price</div>
-                    <div className="font-semibold">{p.price}</div>
-                  </div>
-                  <Link
-                    to={`/properties/${p.id}`}
-                    className="bg-purple-600 px-4 py-2.5 rounded-full text-sm hover:bg-purple-700"
-                  >
-                    View Property Details
-                  </Link>
-                </div>
+                <Link
+                  to={`/properties/${property.id}`}
+                  className="bg-purple-600 px-4 py-2.5 rounded-full text-sm hover:bg-purple-700"
+                >
+                  View Property Details
+                </Link>
               </div>
             </div>
-          ))}
-      </div>
+          </motion.article>
+        ))}
+      </motion.div>
 
-      <div className="mt-8">
+      <div className="hidden">
         <button className="w-full md:hidden bg-[#151517] px-5 py-3 rounded-full text-sm hover:bg-[#1e1e21] mb-4">
           View All Properties
         </button>
+
         <div className="flex items-center justify-between">
           <span className="text-xs text-gray-500">
-            {String(Math.min(page + 1, Math.max(totalPages, 1))).padStart(
-              2,
-              "0",
-            )}{" "}
-            of {String(Math.max(totalPages, 1)).padStart(2, "0")}
+            Continuous carousel
           </span>
+
           <div className="flex gap-2">
             <button
-              onClick={goPrev}
+              type="button"
+              onClick={() => {}}
               className="w-9 h-9 rounded-full bg-[#151517] flex items-center justify-center hover:bg-[#1e1e21]"
             >
               ←
             </button>
+
             <button
-              onClick={goNext}
+              type="button"
+              onClick={() => {}}
               className="w-9 h-9 rounded-full bg-[#151517] flex items-center justify-center hover:bg-[#1e1e21]"
             >
               →

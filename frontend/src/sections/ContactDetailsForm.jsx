@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { submitContactMessage } from "../api/contact";
 
 function ContactDetailsForm() {
   const [formData, setFormData] = useState({
@@ -12,12 +11,14 @@ function ContactDetailsForm() {
     message: "",
     agreed: false,
   });
+
   const [submitting, setSubmitting] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
   const updateField = (event) => {
     const { name, value, type, checked } = event.target;
+
     setFormData((current) => ({
       ...current,
       [name]: type === "checkbox" ? checked : value,
@@ -26,26 +27,35 @@ function ContactDetailsForm() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    if (!formData.agreed) {
+      setErrorMessage(
+        "Please agree to the Terms of Use and Privacy Policy.",
+      );
+      return;
+    }
+
     setSubmitting(true);
     setSuccessMessage("");
     setErrorMessage("");
 
-    try {
-      await submitContactMessage({
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-        email: formData.email,
-        phone: formData.phone,
-        message: formData.message,
-      });
-      setSuccessMessage("Message sent successfully.");
-    } catch (error) {
-      setErrorMessage(
-        error.message || "We couldn't send your message. Please try again.",
-      );
-    } finally {
-      setSubmitting(false);
-    }
+    // Frontend-only demo submission
+    await new Promise((resolve) => setTimeout(resolve, 800));
+
+    setSuccessMessage("Message sent successfully.");
+
+    setFormData({
+      firstName: "",
+      lastName: "",
+      email: "",
+      phone: "",
+      inquiryType: "",
+      referral: "",
+      message: "",
+      agreed: false,
+    });
+
+    setSubmitting(false);
   };
 
   const inputClassName =
@@ -58,9 +68,11 @@ function ContactDetailsForm() {
           <span>✦</span>
           <span className="w-1.5 h-1.5 rounded-full bg-gray-600" />
         </div>
+
         <h2 className="text-2xl md:text-3xl font-bold mb-3">
           Let&apos;s Connect
         </h2>
+
         <p className="text-gray-400 text-sm leading-6">
           We&apos;re excited to connect with you and learn more about your real
           estate goals. Use the form below to get in touch with Estatein.
@@ -83,8 +95,10 @@ function ContactDetailsForm() {
               onChange={updateField}
               placeholder="Enter First Name"
               className={`${inputClassName} mt-2`}
+              required
             />
           </label>
+
           <label className="text-sm text-gray-300">
             Last Name
             <input
@@ -93,8 +107,10 @@ function ContactDetailsForm() {
               onChange={updateField}
               placeholder="Enter Last Name"
               className={`${inputClassName} mt-2`}
+              required
             />
           </label>
+
           <label className="text-sm text-gray-300">
             Email
             <input
@@ -104,6 +120,7 @@ function ContactDetailsForm() {
               onChange={updateField}
               placeholder="Enter your Email"
               className={`${inputClassName} mt-2`}
+              required
             />
           </label>
         </div>
@@ -119,6 +136,7 @@ function ContactDetailsForm() {
               className={`${inputClassName} mt-2`}
             />
           </label>
+
           <label className="text-sm text-gray-300">
             Inquiry Type
             <select
@@ -126,14 +144,18 @@ function ContactDetailsForm() {
               value={formData.inquiryType}
               onChange={updateField}
               className={`${inputClassName} mt-2`}
+              required
             >
               <option value="">Select Inquiry Type</option>
               <option value="buying">Buying a Property</option>
               <option value="selling">Selling a Property</option>
-              <option value="investment">Investment Opportunities</option>
+              <option value="investment">
+                Investment Opportunities
+              </option>
               <option value="management">Property Management</option>
             </select>
           </label>
+
           <label className="text-sm text-gray-300">
             How Did You Hear About Us?
             <select
@@ -160,6 +182,7 @@ function ContactDetailsForm() {
             placeholder="Enter your Message here."
             rows="6"
             className={`${inputClassName} mt-2 resize-y`}
+            required
           />
         </label>
 
@@ -172,22 +195,29 @@ function ContactDetailsForm() {
               onChange={updateField}
               className="accent-purple-600 w-4 h-4"
             />
+
             <span>I agree with Terms of Use and Privacy Policy</span>
           </label>
+
           <button
             type="submit"
             disabled={submitting}
-            className="bg-purple-600 hover:bg-purple-700 transition-colors px-6 py-3 rounded-full text-sm font-medium"
+            className="bg-purple-600 hover:bg-purple-700 transition-colors px-6 py-3 rounded-full text-sm font-medium disabled:opacity-50"
           >
             {submitting ? "Sending..." : "Send Your Message"}
           </button>
         </div>
 
         {successMessage && (
-          <p className="mt-5 text-sm text-green-400">{successMessage}</p>
+          <p className="mt-5 text-sm text-green-400">
+            {successMessage}
+          </p>
         )}
+
         {errorMessage && (
-          <p className="mt-5 text-sm text-red-400">{errorMessage}</p>
+          <p className="mt-5 text-sm text-red-400">
+            {errorMessage}
+          </p>
         )}
       </form>
     </section>

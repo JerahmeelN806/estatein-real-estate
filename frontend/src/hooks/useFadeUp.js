@@ -30,7 +30,7 @@ export function useFadeUp(options = {}) {
     }, element)
 
     return () => ctx.revert()
-  }, [])
+  }, [options.duration])
 
   return ref
 }
@@ -62,7 +62,7 @@ export function useStaggerFadeUp(selector = ".fade-item") {
     }, container)
 
     return () => ctx.revert()
-  }, [])
+  }, [selector])
 
   return containerRef
 }

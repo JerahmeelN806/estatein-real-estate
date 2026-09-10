@@ -1,210 +1,132 @@
-import { useLayoutEffect, useRef, useState } from "react";
-import gsap from "gsap";
 import { Link, useParams } from "react-router-dom";
-import { properties } from "../data/properties";
+
+const properties = [
+  {
+    id: 1,
+    title: "Seaside Serenity Villa",
+    type: "Villa",
+    city: "Miami",
+    price: "$1,250,000",
+    bedrooms: 4,
+    bathrooms: 3,
+    description:
+      "A stunning villa offering breathtaking ocean views, spacious interiors, modern finishes, and luxurious living spaces perfect for relaxing and entertaining.",
+    image:
+      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1600&q=85",
+  },
+  {
+    id: 2,
+    title: "Metropolitan Haven",
+    type: "Apartment",
+    city: "New York",
+    price: "$850,000",
+    bedrooms: 3,
+    bathrooms: 2,
+    description:
+      "A modern apartment located in the heart of the city with premium amenities, stylish interiors, and easy access to restaurants, shopping, and entertainment.",
+    image:
+      "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1600&q=85",
+  },
+  {
+    id: 3,
+    title: "Rustic Retreat Cottage",
+    type: "House",
+    city: "Aspen",
+    price: "$650,000",
+    bedrooms: 3,
+    bathrooms: 2,
+    description:
+      "A peaceful countryside retreat surrounded by beautiful natural scenery, featuring cozy living spaces and a relaxing atmosphere away from the city.",
+    image:
+      "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1600&q=85",
+  },
+  {
+    id: 4,
+    title: "Modern Luxury Residence",
+    type: "House",
+    city: "Los Angeles",
+    price: "$1,450,000",
+    bedrooms: 5,
+    bathrooms: 4,
+    description:
+      "A sophisticated residence featuring contemporary architecture, premium finishes, spacious rooms, and a beautifully designed outdoor area.",
+    image:
+      "https://images.unsplash.com/photo-1600607688969-a5bfcd646154?auto=format&fit=crop&w=1600&q=85",
+  },
+  {
+    id: 5,
+    title: "Urban Skyline Apartment",
+    type: "Apartment",
+    city: "Chicago",
+    price: "$920,000",
+    bedrooms: 3,
+    bathrooms: 2,
+    description:
+      "A stylish city apartment with spectacular skyline views, contemporary interiors, and excellent access to everything the city has to offer.",
+    image:
+      "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1600&q=85",
+  },
+  {
+    id: 6,
+    title: "Elegant Family Villa",
+    type: "Villa",
+    city: "Orlando",
+    price: "$1,100,000",
+    bedrooms: 4,
+    bathrooms: 3,
+    description:
+      "A spacious family villa combining comfort, privacy, modern design, beautiful landscaping, and generous living areas.",
+    image:
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=85",
+  },
+];
 
 function PropertyDetailPage() {
   const { id } = useParams();
-  const pageRef = useRef(null);
   const property = properties.find((item) => item.id === Number(id));
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  useLayoutEffect(() => {
-    if (!property) return undefined;
-
-    const context = gsap.context(() => {
-      const timeline = gsap.timeline({ defaults: { ease: "power3.out" } });
-
-      timeline
-        .from("[data-detail-header]", { autoAlpha: 0, y: 24, duration: 0.6 })
-        .from(
-          "[data-detail-gallery]",
-          { autoAlpha: 0, y: 30, duration: 0.7 },
-          "-=0.35",
-        )
-        .from(
-          "[data-detail-content]",
-          { autoAlpha: 0, y: 24, duration: 0.6 },
-          "-=0.35",
-        );
-    }, pageRef);
-
-    return () => context.revert();
-  }, [id, property]);
 
   if (!property) {
     return (
-      <main className="max-w-7xl mx-auto px-6 md:px-8 py-24">
-        <h1 className="text-3xl font-bold mb-4">Property not found</h1>
-        <Link
-          to="/properties"
-          className="text-purple-400 hover:text-purple-300"
-        >
-          Back to properties
+      <main className="max-w-7xl mx-auto px-6 md:px-8 py-20">
+        <h1 className="text-3xl font-bold mb-3">Property not found</h1>
+        <Link to="/properties" className="text-purple-400 hover:text-purple-300">
+          Browse available properties
         </Link>
       </main>
     );
   }
 
-  const gallery = property.gallery;
-  const featuredImages = [
-    gallery[currentIndex % gallery.length],
-    gallery[(currentIndex + 1) % gallery.length],
-  ];
-
-  const goPrevious = () =>
-    setCurrentIndex((index) => (index === 0 ? gallery.length - 1 : index - 1));
-  const goNext = () => setCurrentIndex((index) => (index + 1) % gallery.length);
-
   return (
-    <main
-      ref={pageRef}
-      className="max-w-7xl mx-auto px-6 md:px-8 py-10 md:py-16"
-    >
-      <header
-        data-detail-header
-        className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-8"
-      >
-        <div>
-          <h1 className="text-3xl md:text-5xl font-bold mb-3">
-            {property.title}
-          </h1>
-          <p className="text-sm text-gray-400">
-            <span className="text-purple-400 mr-2">⌖</span>
-            {property.city}
-          </p>
-        </div>
-        <div className="md:text-right">
-          <p className="text-xs text-gray-500 mb-1">Price</p>
-          <p className="text-2xl font-bold">{property.price}</p>
-        </div>
-      </header>
-
-      <section data-detail-gallery aria-label={`${property.title} gallery`}>
-        <div className="flex gap-3 overflow-x-auto pb-4">
-          {gallery.map((image, index) => (
-            <button
-              key={image}
-              type="button"
-              onClick={() => setCurrentIndex(index)}
-              className={`shrink-0 rounded-xl overflow-hidden border-2 ${
-                index === currentIndex
-                  ? "border-purple-500"
-                  : "border-transparent"
-              }`}
-              aria-label={`Show gallery image ${index + 1}`}
-            >
-              <img src={image} alt="" className="w-24 h-16 object-cover" />
-            </button>
-          ))}
-        </div>
-
-        <div className="grid md:grid-cols-2 gap-4">
-          {featuredImages.map((image, index) => (
-            <img
-              key={`${image}-${index}`}
-              src={image}
-              alt={`${property.title} view ${index + 1}`}
-              className={`${index === 1 ? "hidden md:block" : ""} w-full h-72 md:h-[30rem] object-cover rounded-2xl`}
-            />
-          ))}
-        </div>
-
-        <div className="flex items-center justify-between mt-4">
-          <div className="hidden md:flex items-center gap-2">
-            {gallery.map((image, index) => (
-              <span
-                key={image}
-                className={`h-1.5 rounded-full transition-all ${
-                  index === currentIndex
-                    ? "w-6 bg-purple-500"
-                    : "w-1.5 bg-gray-600"
-                }`}
-              />
-            ))}
-          </div>
-          <div className="ml-auto flex gap-2">
-            <button
-              type="button"
-              onClick={goPrevious}
-              aria-label="Previous images"
-              className="w-10 h-10 rounded-full bg-[#151517] hover:bg-[#222225] text-lg"
-            >
-              ←
-            </button>
-            <button
-              type="button"
-              onClick={goNext}
-              aria-label="Next images"
-              className="w-10 h-10 rounded-full bg-[#151517] hover:bg-[#222225] text-lg"
-            >
-              →
-            </button>
-          </div>
-        </div>
-      </section>
-
-      <section
-        data-detail-content
-        className="grid lg:grid-cols-2 gap-10 lg:gap-16 mt-14"
-      >
-        <div>
-          <h2 className="text-2xl font-bold mb-4">Description</h2>
-          <p className="text-gray-400 leading-7">{property.fullDescription}</p>
-          <div className="grid grid-cols-3 border-y border-[#29292d] mt-8 py-5">
-            <div className="border-r border-[#29292d] pr-3">
-              <p className="text-xs text-gray-500 mb-2">
-                <img
-                  src={property.gallery[0]}
-                  alt=""
-                  className="inline-block w-5 h-5 rounded-full object-cover mr-2 align-middle"
-                />
-                Bedrooms
-              </p>
-              <p className="font-semibold">{property.beds}</p>
+    <main className="max-w-7xl mx-auto px-6 md:px-8 py-10 md:py-16">
+      <Link to="/properties" className="inline-block text-sm text-purple-400 hover:text-purple-300 mb-8">
+        ← Back to properties
+      </Link>
+      <div className="grid lg:grid-cols-2 gap-8 lg:gap-14">
+        <img
+          src={property.image}
+          alt={property.title}
+          className="w-full h-80 lg:h-full min-h-96 object-cover rounded-3xl"
+        />
+        <div className="flex flex-col justify-center">
+          <p className="text-sm text-purple-400 mb-3">{property.type} · {property.city}</p>
+          <h1 className="text-3xl md:text-5xl font-bold mb-5">{property.title}</h1>
+          <p className="text-3xl font-semibold mb-7">{property.price}</p>
+          <p className="text-gray-400 leading-7 mb-8">{property.description}</p>
+          <div className="grid grid-cols-2 border border-[#29292d] rounded-2xl overflow-hidden">
+            <div className="p-5 border-r border-[#29292d]">
+              <p className="text-sm text-gray-500 mb-1">Bedrooms</p>
+              <p className="text-xl font-semibold">{property.bedrooms}</p>
             </div>
-            <div className="border-r border-[#29292d] px-3">
-              <p className="text-xs text-gray-500 mb-2">
-                <img
-                  src={property.gallery[1]}
-                  alt=""
-                  className="inline-block w-5 h-5 rounded-full object-cover mr-2 align-middle"
-                />
-                Bathrooms
-              </p>
-              <p className="font-semibold">{property.baths}</p>
-            </div>
-            <div className="pl-3">
-              <p className="text-xs text-gray-500 mb-2">
-                <img
-                  src={property.gallery[2]}
-                  alt=""
-                  className="inline-block w-5 h-5 rounded-full object-cover mr-2 align-middle"
-                />
-                Area
-              </p>
-              <p className="font-semibold">{property.area}</p>
+            <div className="p-5">
+              <p className="text-sm text-gray-500 mb-1">Bathrooms</p>
+              <p className="text-xl font-semibold">{property.bathrooms}</p>
             </div>
           </div>
+          <Link to="/contact" className="mt-8 bg-purple-600 hover:bg-purple-700 transition-colors rounded-full px-6 py-3 text-sm font-medium text-center">
+            Enquire about this property
+          </Link>
         </div>
-
-        <div>
-          <h2 className="text-2xl font-bold mb-4">
-            Key Features and Amenities
-          </h2>
-          <ul className="border border-[#29292d] rounded-2xl divide-y divide-[#29292d]">
-            {property.features.map((feature) => (
-              <li
-                key={feature}
-                className="flex gap-3 items-start p-4 text-gray-300"
-              >
-                <span className="text-purple-400 text-lg leading-5">✦</span>
-                <span>{feature}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
+      </div>
     </main>
   );
 }

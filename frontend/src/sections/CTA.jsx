@@ -14,12 +14,13 @@ function CTA() {
             personalized assistance.
           </p>
         </div>
-        <button className="bg-purple-600 px-6 py-3 rounded-full text-sm whitespace-nowrap hover:bg-purple-700 w-full md:w-auto">
+        <Link to="/properties" className="bg-purple-600 px-6 py-3 rounded-full text-sm whitespace-nowrap hover:bg-purple-700 w-full md:w-auto text-center">
           Explore Properties
-        </button>
+        </Link>
       </div>
     </section>
   )
 }
 
 export default CTA
+import { Link } from "react-router-dom";

@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { submitContactMessage } from "../api/contact";
 
 function ContactForm() {
   const [formData, setFormData] = useState({
@@ -16,12 +15,14 @@ function ContactForm() {
     message: "",
     agreeToTerms: false,
   });
+
   const [submitting, setSubmitting] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
+
     setFormData((prev) => ({
       ...prev,
       [name]: type === "checkbox" ? checked : value,
@@ -37,26 +38,34 @@ function ContactForm() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
     setSubmitting(true);
     setSuccessMessage("");
     setErrorMessage("");
 
-    try {
-      await submitContactMessage({
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-        email: formData.email,
-        phone: formData.phone,
-        message: formData.message,
-      });
-      setSuccessMessage("Message sent successfully.");
-    } catch (error) {
-      setErrorMessage(
-        error.message || "We couldn't send your message. Please try again.",
-      );
-    } finally {
-      setSubmitting(false);
-    }
+    // Frontend-only demo submission
+    await new Promise((resolve) => setTimeout(resolve, 800));
+
+    setSuccessMessage(
+      "Thank you! Your message has been received. We will get back to you soon.",
+    );
+
+    setFormData({
+      firstName: "",
+      lastName: "",
+      email: "",
+      phone: "",
+      location: "",
+      propertyType: "",
+      bathrooms: "",
+      bedrooms: "",
+      budget: "",
+      preferredContact: "phone",
+      message: "",
+      agreeToTerms: false,
+    });
+
+    setSubmitting(false);
   };
 
   return (
@@ -70,6 +79,7 @@ function ContactForm() {
       <h2 className="text-2xl md:text-3xl font-bold mb-2">
         Let's Make it Happen
       </h2>
+
       <p className="text-gray-400 text-sm max-w-2xl mb-8">
         Ready to take the first step toward your dream property? Fill out the
         form below, and our real estate wizards will work their magic to find
@@ -80,7 +90,7 @@ function ContactForm() {
       {/* Form Panel */}
       <div className="border border-[#232326] rounded-3xl p-6 md:p-8">
         <form className="space-y-6" onSubmit={handleSubmit}>
-          {/* Row 1: First Name, Last Name, Email, Phone */}
+          {/* Row 1 */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <div>
               <label className="block text-xs text-gray-500 mb-2">
@@ -111,7 +121,9 @@ function ContactForm() {
             </div>
 
             <div>
-              <label className="block text-xs text-gray-500 mb-2">Email</label>
+              <label className="block text-xs text-gray-500 mb-2">
+                Email
+              </label>
               <input
                 type="email"
                 name="email"
@@ -123,7 +135,9 @@ function ContactForm() {
             </div>
 
             <div>
-              <label className="block text-xs text-gray-500 mb-2">Phone</label>
+              <label className="block text-xs text-gray-500 mb-2">
+                Phone
+              </label>
               <input
                 type="tel"
                 name="phone"
@@ -135,7 +149,7 @@ function ContactForm() {
             </div>
           </div>
 
-          {/* Row 2: Location, Property Type, Bathrooms, Bedrooms */}
+          {/* Row 2 */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <div>
               <label className="block text-xs text-gray-500 mb-2">
@@ -146,7 +160,7 @@ function ContactForm() {
                   name="location"
                   value={formData.location}
                   onChange={handleChange}
-                  className="w-full bg-[#0d0d0f] border border-gray-600 rounded-lg px-4 py-3 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-purple-600 transition-colors appearance-none"
+                  className="w-full bg-[#0d0d0f] border border-gray-600 rounded-lg px-4 py-3 text-sm text-white focus:outline-none focus:border-purple-600 transition-colors appearance-none"
                 >
                   <option value="">Select Location</option>
                   <option value="coastal">Coastal</option>
@@ -154,6 +168,7 @@ function ContactForm() {
                   <option value="countryside">Countryside</option>
                   <option value="mountain">Mountain</option>
                 </select>
+
                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 pointer-events-none">
                   ▼
                 </span>
@@ -169,7 +184,7 @@ function ContactForm() {
                   name="propertyType"
                   value={formData.propertyType}
                   onChange={handleChange}
-                  className="w-full bg-[#0d0d0f] border border-gray-600 rounded-lg px-4 py-3 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-purple-600 transition-colors appearance-none"
+                  className="w-full bg-[#0d0d0f] border border-gray-600 rounded-lg px-4 py-3 text-sm text-white focus:outline-none focus:border-purple-600 transition-colors appearance-none"
                 >
                   <option value="">Select Property Type</option>
                   <option value="villa">Villa</option>
@@ -177,6 +192,7 @@ function ContactForm() {
                   <option value="house">House</option>
                   <option value="loft">Loft</option>
                 </select>
+
                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 pointer-events-none">
                   ▼
                 </span>
@@ -192,7 +208,7 @@ function ContactForm() {
                   name="bathrooms"
                   value={formData.bathrooms}
                   onChange={handleChange}
-                  className="w-full bg-[#0d0d0f] border border-gray-600 rounded-lg px-4 py-3 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-purple-600 transition-colors appearance-none"
+                  className="w-full bg-[#0d0d0f] border border-gray-600 rounded-lg px-4 py-3 text-sm text-white focus:outline-none focus:border-purple-600 transition-colors appearance-none"
                 >
                   <option value="">Select no. of Bathrooms</option>
                   <option value="1">1</option>
@@ -200,6 +216,7 @@ function ContactForm() {
                   <option value="3">3</option>
                   <option value="4">4+</option>
                 </select>
+
                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 pointer-events-none">
                   ▼
                 </span>
@@ -215,7 +232,7 @@ function ContactForm() {
                   name="bedrooms"
                   value={formData.bedrooms}
                   onChange={handleChange}
-                  className="w-full bg-[#0d0d0f] border border-gray-600 rounded-lg px-4 py-3 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-purple-600 transition-colors appearance-none"
+                  className="w-full bg-[#0d0d0f] border border-gray-600 rounded-lg px-4 py-3 text-sm text-white focus:outline-none focus:border-purple-600 transition-colors appearance-none"
                 >
                   <option value="">Select no. of Bedrooms</option>
                   <option value="1">1</option>
@@ -223,6 +240,7 @@ function ContactForm() {
                   <option value="3">3</option>
                   <option value="4">4+</option>
                 </select>
+
                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 pointer-events-none">
                   ▼
                 </span>
@@ -230,16 +248,19 @@ function ContactForm() {
             </div>
           </div>
 
-          {/* Row 3: Budget + Preferred Contact Method */}
+          {/* Row 3 */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs text-gray-500 mb-2">Budget</label>
+              <label className="block text-xs text-gray-500 mb-2">
+                Budget
+              </label>
+
               <div className="relative">
                 <select
                   name="budget"
                   value={formData.budget}
                   onChange={handleChange}
-                  className="w-full bg-[#0d0d0f] border border-gray-600 rounded-lg px-4 py-3 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-purple-600 transition-colors appearance-none"
+                  className="w-full bg-[#0d0d0f] border border-gray-600 rounded-lg px-4 py-3 text-sm text-white focus:outline-none focus:border-purple-600 transition-colors appearance-none"
                 >
                   <option value="">Select Budget</option>
                   <option value="under-300k">Under $300K</option>
@@ -247,6 +268,7 @@ function ContactForm() {
                   <option value="500k-1m">$500K - $1M</option>
                   <option value="over-1m">Over $1M</option>
                 </select>
+
                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 pointer-events-none">
                   ▼
                 </span>
@@ -257,6 +279,7 @@ function ContactForm() {
               <label className="block text-xs text-gray-500 mb-2">
                 Preferred Contact Method
               </label>
+
               <div className="flex gap-3">
                 <button
                   type="button"
@@ -268,6 +291,7 @@ function ContactForm() {
                   }`}
                 >
                   <span>☎️ Phone</span>
+
                   <span
                     className={`w-3 h-3 rounded-full border-2 ${
                       formData.preferredContact === "phone"
@@ -287,6 +311,7 @@ function ContactForm() {
                   }`}
                 >
                   <span>✉️ Email</span>
+
                   <span
                     className={`w-3 h-3 rounded-full border-2 ${
                       formData.preferredContact === "email"
@@ -299,9 +324,12 @@ function ContactForm() {
             </div>
           </div>
 
-          {/* Row 4: Message */}
+          {/* Message */}
           <div>
-            <label className="block text-xs text-gray-500 mb-2">Message</label>
+            <label className="block text-xs text-gray-500 mb-2">
+              Message
+            </label>
+
             <textarea
               name="message"
               placeholder="Enter your Message here."
@@ -312,7 +340,7 @@ function ContactForm() {
             />
           </div>
 
-          {/* Checkbox + Submit Button */}
+          {/* Checkbox + Submit */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <label className="flex items-center gap-3 text-sm text-gray-300">
               <input
@@ -322,6 +350,7 @@ function ContactForm() {
                 onChange={handleChange}
                 className="w-4 h-4 bg-[#0d0d0f] border border-gray-600 rounded accent-purple-600 cursor-pointer"
               />
+
               I agree with Terms of Use and Privacy Policy
             </label>
 
@@ -337,6 +366,7 @@ function ContactForm() {
           {successMessage && (
             <p className="text-sm text-green-400">{successMessage}</p>
           )}
+
           {errorMessage && (
             <p className="text-sm text-red-400">{errorMessage}</p>
           )}

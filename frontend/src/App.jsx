@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Navigate, Routes, Route } from "react-router-dom";
 import AnnouncementBar from "./sections/AnnouncementBar";
 import Navbar from "./sections/Navbar";
 import Hero from "./sections/Hero";
@@ -29,12 +29,6 @@ import ContactHero from "./sections/ContactHero";
 import ContactDetailsForm from "./sections/ContactDetailsForm";
 import OfficeLocations from "./sections/OfficeLocations";
 import ExploreGallery from "./sections/ExploreGallery";
-import AdminLoginPage from "./pages/AdminLoginPage";
-import AdminDashboardPage from "./pages/AdminDashboardPage";
-import ProtectedRoute from "./components/ProtectedRoute";
-import { AuthProvider } from "./context/AuthContext";
-import ForgotPasswordPage from "./pages/ForgotPasswordPage";
-import ResetPasswordPage from "./pages/ResetPasswordPage";
 
 function HomePage() {
   return (
@@ -186,9 +180,8 @@ function ContactPage() {
 
 function App() {
   return (
-    <AuthProvider>
-      <BrowserRouter>
-        <div className="min-h-screen bg-[#0d0d0f] text-white">
+    <BrowserRouter>
+      <div className="min-h-screen bg-[#0d0d0f] text-white">
           <AnnouncementBar />
           <Navbar />
           <Routes>
@@ -198,25 +191,11 @@ function App() {
             <Route path="/properties/:id" element={<PropertyDetailPage />} />
             <Route path="/services" element={<ServicesPage />} />
             <Route path="/contact" element={<ContactPage />} />
-            <Route path="/admin/login" element={<AdminLoginPage />} />
-            <Route
-              path="/admin/forgot-password"
-              element={<ForgotPasswordPage />}
-            />
-            <Route path="/reset-password" element={<ResetPasswordPage />} />
-            <Route
-              path="/admin"
-              element={
-                <ProtectedRoute>
-                  <AdminDashboardPage />
-                </ProtectedRoute>
-              }
-            />
+            <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
           <Footer />
-        </div>
-      </BrowserRouter>
-    </AuthProvider>
+      </div>
+    </BrowserRouter>
   );
 }
 
